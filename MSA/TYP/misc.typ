@@ -2,7 +2,7 @@
 
 #let partial_frac(a, b) = $(partial #a) / (partial #b)$
 
-#let vec2mat(vec, transpose: false) = {
+#let vec2mat(vec, transpose: false, round: 10) = {
   if transpose {
     math.mat(
       ..vec
@@ -15,9 +15,26 @@
   }
 }
 
+#let vec2matround(vec, transpose: false, digits: 10) = {
+  let rounded_vec = vec.map(x => calc.round(x, digits: digits))
+  
+  if transpose {
+    math.mat(rounded_vec)
+  } else {
+    let rows = rounded_vec.map(x => (x,))
+    math.mat(..rows)
+  }
+}
+
 #let array2mat(array) = {
   math.mat(
     ..array.map(row => row.map(x => x))
+  )
+}
+
+#let array2mat_round(array, digits: 3) = {
+  math.mat(
+    ..array.map(row => row.map(x => calc.round(x, digits: digits)))
   )
 }
 
@@ -25,6 +42,15 @@
   math.mat(
     ..array.map(mat => array2mat(mat))
   )
+}
+
+#let transpose(mat) = {
+  if mat.len() == 0 { return () }
+  
+  let cols = mat.at(0).len()
+  
+  // For each column index 'c', extract the 'c'-th element from every row
+  range(cols).map(c => mat.map(row => row.at(c)))
 }
 
 #let cell(title, prompt, content, ..args) = {
@@ -79,7 +105,7 @@
   )
 }
 
-#let leci-vita(a) = {
+#let levi-civita(a) = {
   if a.len() != 3 {
     return // error!, return null
   }
@@ -111,3 +137,19 @@
     return 1
   }
 }
+
+#let det_3(mat) = {
+  let determinant = 0
+
+  range(3).map(i => 
+    range(3).map(j =>
+      range(3).map(k => {
+        determinant += levi-civita((i, j, k)) * mat.at(1).at(i) * mat.at(2).at(j) * mat.at(3).at(k)
+      })
+    )
+  )
+
+  return determinant
+}
+
+

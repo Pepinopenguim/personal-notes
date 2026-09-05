@@ -1,4 +1,5 @@
 #import "misc.typ": *
+#import "@preview/cetz:0.5.2": canvas, draw
 
 #let A_var = (
     (1, 2, 0),
@@ -570,10 +571,10 @@
   ]
 )
 
-#let leci-vita-arr = range(1,4).map(
+#let levi-civita-arr = range(1,4).map(
   i => range(1,4).map(
     j => range(1,4).map(
-      k => leci-vita((i, j, k))
+      k => levi-civita((i, j, k))
     )
   )
 )
@@ -600,7 +601,7 @@
       // Sum over dummy indices i and j
       for i in range(1, 4) {
         for j in range(1, 4) {
-          let val = leci-vita((i, j, k))
+          let val = levi-civita((i, j, k))
           if val != 0 {
             // Format the sign and the variables
             let sign = if val == 1 { $+$ } else { $-$ }
@@ -616,7 +617,7 @@
     Let $A_(i j) = a_i a_j$
 
     $
-      #array3mat(leci-vita-arr)
+      #array3mat(levi-civita-arr)
       dot
       #array2mat(literal_a)
       =
@@ -893,7 +894,7 @@
 ]
 
 #let problem_b = [
-  *b)* $bold(II) : bold(II) = 3 bold(I)$
+  *b)* $bold(II) : bold(II) = bold(II)$
   
   By definition, $II_(i j k l) = delta_(i k) delta_(j l)$. Thus
 
@@ -956,5 +957,408 @@
     #problem_a
     #problem_b
     #problem_c
+  ]
+)
+
+#let problem_a = [
+  // prove that
+  *a)* $(bold(I) times.o bold(I)) : bold(A) = "trace"(bold(A)) bold(I)$
+  // solution
+  In index notation, the left side is:
+
+  $
+    (delta_(i j) delta_(k l)) dot A_(k l) &= delta_(i j) dot A_(k k) 
+  $
+]
+
+#let problem_b = [
+  *b)* $bold(A)^"anti" = 1/2 (bold(A) - bold(A)^T)$
+
+  By definition, $bold(A)^"anti"$ is:
+
+  $
+    II^"anti":bold(A) &-> II^"anti"_(i j k l) A_(k l) \
+    &= 1/2(delta_(i k) delta_(j l) - delta_(i l) delta_(j k)) A_(k l) \
+    &= 1/2(delta_(i k) delta_(j l) A_(k l) - delta_(i l) delta_(j k) A_(k l)) \
+    &= 1/2(A_(i j) - A_(j i))
+  $
+]
+
+#cell(
+  "Problem 1.5.2",[
+    Considering the second-order tensor $bold(A)$, using index notation, show that
+  ],[
+    #problem_a
+    #problem_b
+  ]
+)
+
+#let A_var = (
+  (3, 0, -1),
+  (0, 4, 0),
+  (-1, 0, 2),
+)
+
+
+
+#let problem_a = [
+  *a)* Rotated by 36.87° around the y-axis.
+
+  #let rot_ang = 36.61 * 3.14/180
+  #let ex = (calc.cos(rot_ang), 0, -calc.sin(rot_ang))
+  #let ex_txt = (calc.cos(rot_ang), 0, -calc.sin(rot_ang) + .3)
+
+  #let ez = (calc.sin(rot_ang), 0, calc.cos(rot_ang))
+  #let ez_txt = (calc.sin(rot_ang) + .3, 0, calc.cos(rot_ang))
+
+  #grid(
+    columns: 2,
+    gutter: 20pt,
+    canvas({
+      import draw: *
+
+      // The projection block is required to tell CeTZ how to render the 3D points
+      ortho(x: 45deg, {
+        
+        on-xz({
+          grid((-2,-2), (2,2), stroke: gray + .5pt)
+        })
+
+        // Draw 3D Axes
+        line((-2,0,0), (2,0,0), stroke: gray.darken(80%), mark: (end: ">"))
+        content((2.3, 0, 0), $x$)
+        
+        line((0,0,0), (0,3,0), stroke: gray.darken(80%), mark: (end: ">"))
+        content((0, 3.3, 0), $y$)
+        
+        line((0,0,-2), (0,0,2), stroke: gray.darken(80%), mark: (end: ">"))
+        content((0, 0, 2.3), $z$)
+
+        // original basis vectors
+        line((0,0,0), (1,0,0), stroke: red + 1.5pt, mark: (end: ">"))
+        content((1.3,0,0), text(red)[$hat(e)_x$])
+
+        line((0,0,0), (0,1,0), stroke: blue + 1.5pt, mark: (end: ">"))
+        content((0,1.3,0), text(blue)[$hat(e)_y$])
+
+        line((0,0,0), (0,0,1), stroke: orange + 1.5pt, mark: (end: ">"))
+        content((0,0,1.3), text(orange)[$hat(e)_z$])
+        
+      })
+    }),
+    canvas({
+      import draw: *
+
+      
+
+      // The projection block is required to tell CeTZ how to render the 3D points
+      ortho(x: 45deg, {
+        
+        on-xz({
+          grid((-2,-2), (2,2), stroke: gray + .5pt)
+        })
+
+        // Draw 3D Axes
+        line((-2,0,0), (2,0,0), stroke: gray.darken(80%), mark: (end: ">"))
+        content((2.3, 0, 0), $x$)
+        
+        line((0,0,0), (0,3,0), stroke: gray.darken(80%), mark: (end: ">"))
+        content((0, 3.3, 0), $y$)
+        
+        line((0,0,-2), (0,0,2), stroke: gray.darken(80%), mark: (end: ">"))
+        content((0, 0, 2.3), $z$)
+
+        // new basis vectors
+        line((0,0,0), ex, stroke: red + 1.5pt, mark: (end: ">"))
+        content(ex_txt, text(red)[$hat(e)_x$])
+
+        line((0,0,0), (0,1,0), stroke: blue + 1.5pt, mark: (end: ">"))
+        content((0,1.3,0), text(blue)[$hat(e)_y$])
+
+        line((0,0,0), ez, stroke: orange + 1.5pt, mark: (end: ">"))
+        content(ez_txt, text(orange)[$hat(e)_z$])
+        
+      })
+    })
+  )
+
+  Thus the new basis vector become
+
+  $
+    bold(hat(e)_x) = #vec2matround(ex, digits: 3)
+    bold(hat(e)_y) = #vec2matround((0,1,0), digits: 3)
+    bold(hat(e)_z) = #vec2matround(ez, digits: 3)
+  $
+
+  #let R = transpose((
+    ex,
+    (0,1,0),
+    ez
+  ))
+  Thus 
+  $
+    bold(R) = #array2mat_round(R)
+  $
+
+  By definition, $bold(A)' = bold(R)^T bold(A) bold(R) -> A'_(i j)  = R_(k i) A_(k l) R_(l j)$
+
+  #let A_result = range(3).map(i => {
+    range(3).map(j => {
+      // ^result indexes
+      
+      // Calculate the sum for the specific (i, j) cell
+      let cell_sum = 0
+      // loop through dummies
+      for k in range(3) {
+        for l in range(3) {
+          cell_sum += R.at(k).at(i) * A_var.at(k).at(l) * R.at(l).at(j)  
+        }
+      }
+      
+      return cell_sum // This value gets placed at (i, j)
+      
+    })
+  })
+  
+  $
+    bold(A)' = #array2mat_round(A_result, digits: 5)
+  $
+
+]
+
+#let problem_b = [
+  *b)* Rotated by 45° around the z-axis.
+
+  #let rot_ang = 45 * calc.pi / 180
+  
+  #let ex = (calc.cos(rot_ang), calc.sin(rot_ang), 0)
+  #let ex_txt = (calc.cos(rot_ang) + 0.3, calc.sin(rot_ang), 0)
+
+  #let ey = (-calc.sin(rot_ang), calc.cos(rot_ang), 0)
+  #let ey_txt = (-calc.sin(rot_ang), calc.cos(rot_ang) + 0.3, 0)
+
+  #grid(
+    columns: 2,
+    gutter: 20pt,
+    canvas({
+      import draw: *
+
+      ortho(x: 45deg, {
+        
+        on-xy({
+          grid((-2,-2), (2,2), stroke: gray + .5pt)
+        })
+
+        // Draw 3D Axes
+        line((-2,0,0), (2,0,0), stroke: gray.darken(80%), mark: (end: ">"))
+        content((2.3, 0, 0), $x$)
+        
+        line((0,-2,0), (0,3,0), stroke: gray.darken(80%), mark: (end: ">"))
+        content((0, 3.3, 0), $y$)
+        
+        line((0,0,-2), (0,0,2), stroke: gray.darken(80%), mark: (end: ">"))
+        content((0, 0, 2.3), $z$)
+
+        // original basis vectors
+        line((0,0,0), (1,0,0), stroke: red + 1.5pt, mark: (end: ">"))
+        content((1.3,0,0), text(red)[$hat(e)_x$])
+
+        line((0,0,0), (0,1,0), stroke: blue + 1.5pt, mark: (end: ">"))
+        content((0,1.3,0), text(blue)[$hat(e)_y$])
+
+        line((0,0,0), (0,0,1), stroke: orange + 1.5pt, mark: (end: ">"))
+        content((0,0,1.3), text(orange)[$hat(e)_z$])
+        
+      })
+    }),
+    canvas({
+      import draw: *
+
+      ortho(x: 45deg, {
+        
+        on-xy({
+          grid((-2,-2), (2,2), stroke: gray + .5pt)
+        })
+
+        // Draw 3D Axes
+        line((-2,0,0), (2,0,0), stroke: gray.darken(80%), mark: (end: ">"))
+        content((2.3, 0, 0), $x$)
+        
+        line((0,-2,0), (0,3,0), stroke: gray.darken(80%), mark: (end: ">"))
+        content((0, 3.3, 0), $y$)
+        
+        line((0,0,-2), (0,0,2), stroke: gray.darken(80%), mark: (end: ">"))
+        content((0, 0, 2.3), $z$)
+
+        // new basis vectors
+        line((0,0,0), ex, stroke: red + 1.5pt, mark: (end: ">"))
+        content(ex_txt, text(red)[$hat(e)_x$])
+
+        line((0,0,0), ey, stroke: blue + 1.5pt, mark: (end: ">"))
+        content(ey_txt, text(blue)[$hat(e)_y$])
+
+        line((0,0,0), (0,0,1), stroke: orange + 1.5pt, mark: (end: ">"))
+        content((0,0,1.3), text(orange)[$hat(e)_z$])
+        
+      })
+    })
+  )
+
+  Thus the new basis vectors become:
+
+  $
+    bold(hat(e)_x) = #vec2matround(ex, digits: 3)
+    bold(hat(e)_y) = #vec2matround(ey, digits: 3)
+    bold(hat(e)_z) = #vec2matround((0,0,1), digits: 3)
+  $
+
+  #let R = transpose((
+    ex,
+    ey,
+    (0,0,1)
+  ))
+  
+  Thus 
+  $
+    bold(R) = #array2mat_round(R, digits: 3)
+  $
+
+  By definition, $bold(A)' = bold(R)^T bold(A) bold(R) -> A'_(i j)  = R_(k i) A_(k l) R_(l j)$
+
+  #let A_result = range(3).map(i => {
+    range(3).map(j => {
+      let cell_sum = 0
+      for k in range(3) {
+        for l in range(3) {
+          cell_sum += R.at(k).at(i) * A_var.at(k).at(l) * R.at(l).at(j)  
+        }
+      }
+      return cell_sum
+    })
+  })
+
+  $
+    bold(A)' = #array2mat_round(A_result, digits: 5)
+  $
+]
+
+#cell(
+  "Problem 1.6.1",[
+    Given the second-order tensor
+
+    $
+      bold(A) = #array2mat(A_var)
+    $
+
+    find its components in a new coordinate system obtained by
+  ],[
+    #problem_a
+    #problem_b
+  ]
+)
+
+#let A_var = (
+  (-4.216, 0, -2.688),
+  (0, 12.5, 0),
+  (-2.688, 0, 4.216),
+)
+
+#let A_var_2 = (
+  ($-4.216 - lambda$, 0, -2.688),
+  (0, $12.5 - lambda$, 0),
+  (-2.688, 0, $4.216 - lambda$),
+)
+
+#cell(
+  "Problem 1.7.1", [
+    Given the second-order tensor $bold(A)$
+
+    $
+      bold(A) = #array2mat(A_var)
+    $
+
+    Evaluate
+  ],[
+
+    *a)* The eigenvalues and eigenvectors
+    
+    To obtain the eigenvalues, we must solve
+
+    $
+      det(#array2mat(A_var) - bold(I) lambda) = 0 \
+      det(#array2mat(A_var_2)) = 0 \
+    $
+    Thus
+    $
+      (lambda^2 - 4.216^2)(12.5-lambda) - (12.5-lambda)(2.688^2) = \
+      (12.5 - lambda) (lambda^2  - #calc.round(digits: 3, 4.216*4.216 + 2.688*2.688)) =\
+      (12.5 - lambda) (lambda - 5) (lambda + 5) = 0
+    $
+
+    Thus
+
+    $
+      lambda = mat(12.5; 5; -5)
+    $
+
+
+    #let get_eigen_mat(eigen) = range(3).map(
+        i => range(3).map(
+          j => {
+            let c = A_var.at(i).at(j)
+
+            if (i == j) {
+              c -= eigen
+            }
+
+            return c
+          }
+        )
+      )
+
+    For $lambda_1 = 12.5$, we must solve
+
+    $
+      #array2mat_round(get_eigen_mat(12.5))
+      #vec2mat(($v_(1,1)$, $v_(1,2)$, $v_(1,3)$)) =
+      #vec2mat((0,0,0))
+    $
+
+    The only unit vector that solves the equation above is
+
+    $
+      v_1 = #vec2mat((0,1,0))
+    $
+
+    For $lambda_2 = 5$, we must solve
+
+    $
+      #array2mat_round(get_eigen_mat(5))
+      #vec2mat(($v_(2,1)$, $v_(2,2)$, $v_(2,3)$)) =
+      #vec2mat((0,0,0))
+    $
+
+    It is clear that $v_(2,2)$ must be null for the solution to be achiavable, Thus
+
+    $
+      #array2mat((
+        (-9.216, -2.688),
+        (- 2.688, -0.784),
+      ))
+      #vec2mat(($v_(2,1)$, $v_(2,3)$)) =
+      #vec2mat((0,0))
+    $
+
+    Assuming $v_(2,1) = 1 -> v_(2,3) = #calc.round(9.216 / -2.688, digits: 3)$ 
+
+    Thus the second eigenvector is
+
+    $
+      v_2 = #vec2mat((1,0,-3.429)) -> v_2 = #vec2mat((
+        calc.round(digits: 3, 1 / calc.sqrt(1 + 3.429 * 3.429)),
+        0,
+        calc.round(digits: 3, -3.429 / calc.sqrt(1 + 3.429 * 3.429))
+      ))
+    $
   ]
 )
