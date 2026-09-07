@@ -1360,5 +1360,191 @@
         calc.round(digits: 3, -3.429 / calc.sqrt(1 + 3.429 * 3.429))
       ))
     $
+
+    To obtain the third eigenvalue, it will be the vector ortogonal to the previous:
+
+    $
+    bold(v_3) = bold(v_1) times bold(v_2) = det(mat(
+      bold(hat(e)_x), bold(hat(e)_y), bold(hat(e)_z);
+      0, 1, 0;
+      0.28, 0, -0.96
+    ))
+    =
+    mat(
+      -0.96;
+      0;
+      -0.28
+    )
+    $
+
+  #align(center)[
+    #canvas({
+      import draw: *
+
+      ortho(x: -60deg, y: 0deg, z: -50deg , {
+        
+        on-xy({
+          grid((-2,-2), (2,2), stroke: gray + .5pt)
+        })
+
+        // Draw 3D Axes
+        line((-2,0,0), (2,0,0), stroke: gray.darken(80%), mark: (end: ">"))
+        content((2.3, 0, 0), $x$)
+        
+        line((0,-2,0), (0,3,0), stroke: gray.darken(80%), mark: (end: ">"))
+        content((0, 3.3, 0), $y$)
+        
+        line((0,0,-1), (0,0,2), stroke: gray.darken(80%), mark: (end: ">"))
+        content((0, 0, 2.3), $z$)
+
+        let v1 = (0,1,0)
+        let v2 = (.28,0, -.96)
+        let v3 = (-.96, 0, -.28)
+        let vectors = (v1, v2, v3)
+        let colors = (red, green, orange)
+        let lbls = ($v_1$, $v_2$, $v_3$)
+        for i in range(3) {
+          line(range(3).map(something => 0), vectors.at(i), stroke: colors.at(i).darken(25%), mark: (end: ">"))
+          content(vectors.at(i).map(v => v + .2), text(fill: colors.at(i))[#lbls.at(i)])
+        }
+        })
+      })
+  ]
+  
+  *b)* The principal invariants $bold(I_1), bold(I_2) "and" bold(I_3)$
+
+  We know that
+
+  $
+    (12.5 - lambda) (lambda - 5) (lambda + 5) = 0
+  $
+
+  Which can be written as
+
+  $
+    lambda^3 - 12.5lambda^2 - 25lambda + 312.5 = 0
+  $
+
+  Which implies
+
+  $
+    bold(I_A) = mat(
+      12.5;
+      -25;
+      -312.5
+    )
+  $
+
+  ]
+
+
+)
+
+
+#let problem_a = [
+  *a)* $u_r = u_theta = 0, u_z = alpha + beta r^2$
+
+  The divergence in cylindrical coordinates is defined by
+
+  $
+    bold(nabla dot f) =& 1/r #partial_frac($$, $r$) (r f_r)
+    + 1/r #partial_frac($f_theta$, $theta$)
+    + #partial_frac($f_z$, $z$)
+    
+  $
+
+  Thus, simply:
+
+  $
+    bold(nabla dot u) &= 1/r #partial_frac($$, $r$) (r dot 0)
+    + 1/r #partial_frac($0$, $theta$)
+    + #partial_frac($$, $z$) (alpha + beta r ^2)
+    =
+    0
+  $
+]
+#let problem_b = [
+  *b)* $u_r = sin(theta) / r, u_z = u_theta = 0$
+
+  $
+    bold(nabla dot u) &= 1/r #partial_frac($$, $r$) (r (sin(theta) / r))
+    + 1/r #partial_frac($0$, $theta$)
+    + #partial_frac($ 0$, $z$) \
+    &= 1/r #partial_frac($$, $r$) (sin(theta)) \
+    &= 0
+  $
+]
+#let problem_c = [
+  *c)* $u_r = r^2 sin(theta), u_theta = r^2 cos(theta), u_z = 0$
+
+  $
+    bold(nabla dot u) &= 1/r #partial_frac($$, $r$) (r (r^2 sin(theta)))
+    + 1/r #partial_frac($$, $theta$) (r^2 cos(theta))
+    + #partial_frac($ 0$, $z$) \
+    &= sin(theta)/r #partial_frac($r^3$, $r$) + r #partial_frac($cos(theta)$, $theta$)\
+    &= 3 r sin(theta) - r sin(theta) \
+    &= 2 r sin(theta)
+  $
+]
+
+#cell(
+  "Problem 1.8.1", [
+    Calculate $bold(nabla dot u)$ for the following vector fields assuming $alpha$ and $beta$ are constants
+
+  ], [
+    #problem_a
+    #problem_b
+    #problem_c
+  ]
+)
+
+#cell(
+  "Problem 1.8.2", [
+    Calculate $bold(nabla dot u)$ for the vector field given in spherical coordinates assuming $alpha$ and $beta$ as constants.
+
+    $
+      bold(u_rho) = alpha rho + beta / rho^2, bold(u_theta = u_phi) = 0
+    $
+  ], [
+    For spherical coordinates, where $f_rho$ is the only non null direction, the divergence is defined by
+
+    $
+      bold(nabla dot f) = 1 / rho^2 #partial_frac($$, $rho$) (rho^2 f_rho)
+    $
+
+    Thus
+
+    $
+      bold(nabla dot u) &= 1 / rho^2 #partial_frac($$, $rho$) [rho^2 (alpha rho + beta / rho^2)] \
+      &= 1 / rho^2 #partial_frac($$, $rho$) [alpha rho^3 + beta] \
+      &= 1 / rho^2 3 alpha rho^2 \ &= 3 alpha
+    $
+  ]
+)
+
+#cell(
+  "Problem 1.8.3", [
+    Demonstrate that $#partial_frac($hat(e)_ rho$, $theta$) = sin(phi) bold(hat(e)_theta)$ in spherical coordinates.
+  ], [
+  It is known that
+  $
+    hat(e)_rho = sin(phi) cos(theta) hat(e)_x
+    + sin(phi) sin(theta) hat(e)_y
+    + cos(phi) hat(e)_z
+  $
+
+  Thus, the derivative is obtained with
+
+  $
+    #partial_frac($hat(e)_rho$, $theta$)
+      &= -sin(phi) sin(theta) hat(e)_x
+        + sin(phi) cos(theta) hat(e)_y \
+      &= sin(phi) (
+          -sin(theta) hat(e)_x
+          + cos(theta) hat(e)_y
+        ) \
+      &= sin(phi) hat(e)_theta
+  $
+
   ]
 )
