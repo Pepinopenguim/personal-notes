@@ -83,7 +83,7 @@
 )[
   = Introdução
 
-  O cenário atual de softwares de concreto armado apresenta suítes extremamente eficientes, porém apresentam alto custo, curva de aprendizado íngrime e, frequentemente, atuam como "caixas-pretas". Neste contexto, a presente pesquisa apresenta o BeamCan, uma aplicativo multi-plataforma voltado para o dimensionamento e detalhamento de seções transversais de vigas de concreto armado.
+  O cenário atual de softwares de concreto armado possui suítes extremamente eficientes, porém apresentam alto custo, curva de aprendizado íngrime e, frequentemente, atuam como "caixas-pretas". Neste contexto, a presente pesquisa introduz o BeamCan, uma aplicativo multi-plataforma voltado para o dimensionamento e detalhamento de seções transversais de vigas de concreto armado.
 
   
 
@@ -122,6 +122,8 @@
     caption: [Fluxo de utilização do beamCan]
   )
 
+  #box(height: 50pt)
+
   O principal diferencial do BeamCan existe em seu motor iterativo de empacotamento. Diferente das abordagens tradicionais, o algoritmo realiza uma varredura combinatória exaustiva do espaço de soluções. Ele posiciona fisicamente as barras comerciais, valida os espaçamentos normativos, recalcula a altura útil efetiva e disponibiliza um catálogo otimizado de opções viáveis para o usuário.
 
   // #figure(
@@ -154,7 +156,7 @@ kind: table
 
   = Resultados e Conclusões
 
-Para análise de performance, foram analisadas mais de 3000 vigas com condições, métodos e soluções variadas:
+Para análise de performance, foram analisadas mais de 3000 vigas com condições, métodos e soluções variadas, apresentando performance excepcional, com tempo de cálculo de 0,2 segundos nos casos mais pessimistas.
 
 #figure(
   box(
