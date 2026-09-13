@@ -53,7 +53,7 @@
   range(cols).map(c => mat.map(row => row.at(c)))
 }
 
-#let cell(title, prompt, content, ..args) = {
+#let cell(title, prompt, content,  base-color: red, ..args) = {
   block(
     width: 100%,
     fill: white,
@@ -66,14 +66,14 @@
       // Title
       #block(
         width: 100%,
-        fill: red.lighten(88%),
+        fill: base-color.lighten(88%),
         inset: (x: 12pt, y: 8pt),
         [
           #text(
             title,
             weight: "bold",
             size: 12pt,
-            fill: red.darken(50%),
+            fill: base-color.darken(50%),
           )
         ],
       )
@@ -95,7 +95,7 @@
         width: 100%,
         inset: (x: 12pt, y: 12pt),
         [
-          #text(weight: "bold", size: 9pt, fill: red.darken(15%))[SOLUTION]
+          #text(weight: "bold", size: 9pt, fill: base-color.darken(15%))[SOLUTION]
           #v(5pt)
           #content
         ],
@@ -153,3 +153,16 @@
 }
 
 
+
+#let matmul(mat1, mat2, dim: 3) = {
+  range(dim).map(i =>
+    range(dim).map(j => {
+      let value = 0
+      for k in range(dim) {
+        value += mat1.at(i).at(k) + mat2.at(k).at(j)
+      }
+      value
+      }
+    )
+  )
+}
