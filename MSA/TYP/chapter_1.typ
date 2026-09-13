@@ -1,6 +1,8 @@
 #import "misc.typ": *
 #import "@preview/cetz:0.5.2": canvas, draw
 
+#set page(numbering: "I")
+
 #let A_var = (
     (1, 2, 0),
     (2, 4, 1),
@@ -626,7 +628,9 @@
       #vec2mat((0,0,0))
     $
 
-    *By triviality*
+    #text(fill: red.darken(65%))[Note: To represent a third order tensor as an array of matrices may not be standard. This was done mainly for visualizations.]
+
+    *By triviality...*
 
     Multiplying both sides by the cartesian basis vector:
 
@@ -634,11 +638,11 @@
       epsilon.alt_(i j k) a_i a_j dot bold(hat(e))_i = 0 dot bold(hat(e))_i = 0
     $
 
-    The expression above is the cross product of the vector $bold(a)$.
+    The expression above is the cross product of the vector $bold(a)$ by itself:
 
     $
       epsilon.alt_(i j k) a_i a_j dot bold(hat(e))_i 
-      =
+      ->
       bold(a)
       times
       bold(a)
@@ -1290,8 +1294,8 @@
     $
     Thus
     $
-      (lambda^2 - 4.216^2)(12.5-lambda) - (12.5-lambda)(2.688^2) = \
-      (12.5 - lambda) (lambda^2  - #calc.round(digits: 3, 4.216*4.216 + 2.688*2.688)) =\
+      (lambda^2 - 4.216^2)(12.5-lambda) - (12.5-lambda)(2.688^2) = 0\
+      (12.5 - lambda) (lambda^2  - #calc.round(digits: 3, 4.216*4.216 + 2.688*2.688)) = 0\
       (12.5 - lambda) (lambda - 5) (lambda + 5) = 0
     $
 
