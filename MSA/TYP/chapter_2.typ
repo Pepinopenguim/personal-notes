@@ -131,15 +131,17 @@ $
       )
     $
   ],[
-    Firstly:
+    Firstly, assuming $k != 0$:
 
     $
       (partial^2 epsilon_(11)) / (partial bold(X)_2^2) + 
       (partial^2 epsilon_(22)) / (partial bold(X)_1^2) -
       2 (partial^2 epsilon_(12)) / (partial bold(X)_1 bold(X)_2)
       =
-      0
+      2k + 0 + 0 != 0 
     $
+
+    Thus, with the first test, de tensor field is incompatible.
   ],
   base-color: blue
 )
@@ -148,6 +150,7 @@ $
   "Problem 2.2.2",[
     Show that the tensor field below is compatible:
 
+    
 
   ],[
     $
