@@ -2,6 +2,7 @@
 #import "@preview/cetz:0.5.2": canvas, draw
 
 
+
 #cell(
   "Problem 2.1.1",[
     A body is subjected to the displacement field
@@ -382,8 +383,209 @@ $
 
 #cell(
   "Problem 2.4.2",[
-    
+    Given the displacement field 
+
+    $
+      bold(u) = k(X_1^2+X_2^2) t hat(e)_1 + k X_1 X_2 hat(e)_2 + k X_1 bold(X)_3 hat(e)_3
+    $
+
+    where $k = 10^(-4)$, determine the principal strains and directions at $bold(X) = (2,1,1)$ for $t = 1$ and $t = 2$.
   ],[
+    The tensor filed is defined by
+
+    $
+      epsilon_(i j) = 1/2(#partial_frac($u_i$, $X_j$) + #partial_frac($u_j$, $X_i$))
+    $
+
+    Thus,
+
+    $
+      bold(epsilon)(X_1, X_2, X_3, t) = mat(
+        2 X_1 t, X_2 + 2 X_2 t, X_3;
+        X_2 + 2 X_2 t, X_1 , 0;
+        X_3, 0, X_1;
+      ) dot k
+    $
+
+    Which, for $(2,1,1)$:
+
+
+    $
+      bold(epsilon)(t) = mat(
+        4 t, 1 + 2t, 1;
+        1 + 2t, 2, 0;
+        1, 0, 2;
+      )
+    $
+
+    For $t = 1$
+
+    $
+      epsilon = mat(
+        4, 3, 1;
+        3, 2, 0;
+        1, 0, 2;
+      )
+    $
+
+    The characteristic polynomial for this tensor field is then
+
+    $
+      lambda^3 - 8 lambda^2 + 10 lambda + 4 = 0
+    $
+
+    Thus the principal strains are:
+
+    $
+      bold(lambda) = mat(
+        3 + sqrt(11);
+        2;
+        3 - sqrt(11);
+      ) k
+    $
+
+    With eigenvectors:
+
+    $
+      bold(Q) = mat(
+        |, |, |;
+        bold(v)_1, bold(v)_2, bold(v)_3;
+        |, |, |
+      ) = mat(
+         4.31662,   0.0,  -2.31662;
+          3.0,      -1.0,   3.0;
+          1.0,       3.0,   1.0;
+      ) = mat(
+        0.8067, 0, -0.5910;
+        0.5606, -0.3162, 0.7653;
+        0.1868, 0.9487, 0.2551;
+      )
+    $
+
+    Similarly, for $t = 2$:
+
+    $
+      bold(epsilon)
+      =
+      mat(
+        8, 5, 1;
+        5, 2, 0;
+        1, 0, 2;
+      )
+    $
+
+    The principal strains are:
+
+    $
+      bold(lambda) = mat(
+        5 + sqrt(35);
+        2;
+        5 - sqrt(35);
+      ) k
+    $
+
+    $
+      bold(Q) = mat(
+        |, |, |;
+        bold(v)_1, bold(v)_2, bold(v)_3;
+        |, |, |
+      ) = mat(
+        8.91608,   0.0,  -2.91608;
+        5.0,      -1.0,   5.0;
+        1.0,       5.0,   1.0;
+      ) = mat(
+        0.8685, 0.0, -0.4964;
+        0.4870, -0.1961, 0.8511;
+        0.0974, 0.9806, 0.1702;
+      )
+    $
+
+    #let Rot = (-20deg,120deg,80deg)
+
+    #align(center)[
+      #grid(
+        align: center,
+        columns: 4,
+        [$t=1$],
+        [
+          #canvas({
+            import draw: *
+
+            ortho(z: Rot.at(2), x:Rot.at(0), y:Rot.at(1), {
+
+              
+              // Changed from on-xz to on-xy to match v2 and v3
+              on-xy({
+                grid((-2,-2), (2,2), stroke: gray + .5pt)
+              })
+
+              // Draw 3D Axes
+              line((-2,0,0), (2,0,0), stroke: gray.darken(80%), mark: (end: ">"))
+              content((2.3, 0, 0), $x$)
+              
+              // Extended the Y axis to the negative side to anchor v2
+              line((0,-2,0), (0,3,0), stroke: gray.darken(80%), mark: (end: ">"))
+              content((0, 3.3, 0), $y$)
+              
+              line((0,0,-2), (0,0,2), stroke: gray.darken(80%), mark: (end: ">"))
+              content((0, 0, 2.3), $z$)
+              
+              let v1 = (0.8067, 0.5606, 0.1868)
+              line((0,0,0), v1, stroke: red + 1.5pt, mark: (end: ">"))
+              content(v1.map(v => v + .1), text(red)[$v_1$])
+
+              let v2 = (0, -.3162, .9487)
+              line((0,0,0), v2, stroke: blue + 1.5pt, mark: (end: ">"))
+              content(v2.map(v => v + .1), text(blue)[$v_2$])
+
+              let v3 = (-.591, .7653, .2551)
+              line((0,0,0), v3, stroke: orange + 1.5pt, mark: (end: ">"))
+              content(v3.map(v => v + .1), text(orange)[$v_3$])
+              
+              })
+            })
+        ],
+        [$t=2$],
+        [
+          #canvas({
+            import draw: *
+
+            ortho(z: Rot.at(2), x:Rot.at(0), y:Rot.at(1), {
+
+              
+              // Changed from on-xz to on-xy to match v2 and v3
+              on-xy({
+                grid((-2,-2), (2,2), stroke: gray + .5pt)
+              })
+
+              // Draw 3D Axes
+              line((-2,0,0), (2,0,0), stroke: gray.darken(80%), mark: (end: ">"))
+              content((2.3, 0, 0), $x$)
+              
+              // Extended the Y axis to the negative side to anchor v2
+              line((0,-2,0), (0,3,0), stroke: gray.darken(80%), mark: (end: ">"))
+              content((0, 3.3, 0), $y$)
+              
+              line((0,0,-2), (0,0,2), stroke: gray.darken(80%), mark: (end: ">"))
+              content((0, 0, 2.3), $z$)
+              
+              let v1 = (0.8685, .487, .0974)
+              line((0,0,0), v1, stroke: red + 1.5pt, mark: (end: ">"))
+              content(v1.map(v => v + .1), text(red)[$v_1$])
+
+              let v2 = (0, -.1961, .9806)
+              line((0,0,0), v2, stroke: blue + 1.5pt, mark: (end: ">"))
+              content(v2.map(v => v + .1), text(blue)[$v_2$])
+
+              let v3 = (-.4964, .8511, .1702)
+              line((0,0,0), v3, stroke: orange + 1.5pt, mark: (end: ">"))
+              content(v3.map(v => v + .1), text(orange)[$v_3$])
+              
+              })
+            })
+        ]
+      )
+    ]
 
   ],
   base-color: blue
@@ -392,8 +594,59 @@ $
 
 #cell(
   "Problem 2.4.3",[
+    Given the infinitesimal strain tensor $bold(epsilon)$, find the principal strains and directions. Consider $𝑘 = 10^(−4)$.
 
+    $
+      epsilon = k mat(
+        1, 0.5, 0;
+        0.5, 1, 0;
+        0, 0, 1;
+      )
+    $
   ],[
+    To obtain the eigenvalues, the following expression must be solved:
+
+    $
+      det mat(
+        1 - lambda', 0.5, 0;
+        0.5, 1-lambda', 0;
+        0, 0, 1-lambda'
+      )
+      =
+      0
+    $
+
+    $
+      (1 - lambda')^3 - 0.5^2 (1 - lambda') = 0 \
+      lambda'^3 - 3 lambda'^2 + 2.75 lambda' - 0.75 = 0
+    $
+
+    For $lambda' = lambda / k$.
+
+    Which solutions are
+
+    $
+      bold(lambda) = mat(
+        3"/"2;
+        1;
+        1"/"2
+      ) k
+    $
+
+    Then:
+
+    $
+      bold(Q) = mat(
+        |, |, |;
+        bold(v)_1, bold(v)_2, bold(v)_3;
+        |, |, |
+      ) = mat(
+          0.707,  0,  -0.707;
+          0.707,  0,   0.707;
+          0   ,  1,   0;
+      )
+    $
+
 
   ],
   base-color: blue
@@ -401,9 +654,85 @@ $
 
 #cell(
   "Problem 2.5.1",[
+    The cylindrical components $epsilon '$ were calculated at $(r, theta, z) = (3, pi/6, 0)$. Convert them to Cartesian components.
 
+    $
+      epsilon' = mat(
+        2, -1, 2;
+        -1, 1, 0;
+        2, 0, 3
+      ) dot 10^(-3)
+    $
   ],[
+    To change from cylindrical to cartesian components, we must invert the following equation
 
+    $
+      bold(epsilon') = bold(R)^T bold(epsilon) bold(R)
+    $
+
+    Multiplying on the left by $bold(R)$, and on the right, by $bold(R)^T$:
+
+    $
+      bold(R) epsilon' bold(R)^T = bold(R) bold(R)^T epsilon bold(R) bold(R)^T
+    $
+
+    Since $bold(R)$ is orthogonal, $bold(R) bold(R)^T = 1$:
+
+    $
+      epsilon = bold(R) epsilon' bold(R)^T
+    $
+
+    The transformation tensor for cylindrical coordinates becomes:
+
+    $
+      bold(R) = mat(
+        cos(theta), -sin(theta), 0;
+        sin(theta), cos(theta), 0;
+        0, 0, 1;
+      )
+    $
+
+    At $(r, theta, z) = (3, pi/6, 0)$:
+
+    $
+      bold(R) = mat(
+        0.866, -0.5, 0;
+        0.5, 0.866, 0;
+        0, 0, 1; 
+      )
+    $
+
+    Finally
+
+    $
+      epsilon
+      =
+      bold(R)
+      epsilon'
+      bold(R)^T
+      =
+      mat(
+        0.866, -0.5, 0;
+        0.5, 0.866, 0;
+        0, 0, 1; 
+      )
+      mat(
+        2, -1, 2;
+        -1, 1, 0;
+        2, 0, 3
+      )
+      mat(
+        0.866, 0.5, 0;
+        -0.5, 0.866, 0;
+        0, 0, 1; 
+      ) dot 10^(-3) \
+      epsilon =
+      mat(
+        2.61603,    -0.0669873,  1.73205;
+      -0.0669873,   0.383975,   1.0;
+        1.73205,     1.0,        3.0;
+      ) dot 10^(-3)
+    $
   ],
   base-color: blue
 )
